@@ -1,0 +1,9 @@
+POST http://localhost:3000/products
+Content-Type: application/json
+
+{
+  "name": "Acer Gamer Nitro 5",
+  "description": "Intel i5 9300H NVIDIA GTX 1650 (4GB) 15.6'' FHD 8GB 1TB + 128GB SSD",
+  "price": 1000,
+  "quantity": 3
+}
