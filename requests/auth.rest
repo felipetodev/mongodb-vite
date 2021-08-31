@@ -4,7 +4,7 @@ Content-Type: application/json
 
 {
   "email": "test123@test.com",
-  "password": "1234@"
+  "password": "123456@"
 }
 
 ### Login
@@ -12,12 +12,12 @@ POST http://localhost:3007/auth/login
 Content-Type: application/json
 
 {
-  "email": "test123@test.com",
-  "password": "1234@"
+  "email": "te@test.com",
+  "password": "123456@"
 }
 
 
 ### Profile
 GET http://localhost:3007/auth/profile
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMmIxODE1Y2ZlZTNmZGZjMTcxMTY0NiIsImlhdCI6MTYzMDIxNTY3MX0.3SKAbUPucDuZLf59ITkzTSO8-HUEk_ydMrtKn6dDfQ8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMmQ5NDczMjYyM2I4MjcwY2FmNjhkMyIsImlhdCI6MTYzMDM3NzEwMX0.Rw24DcpX-PCf8mS6FQMsTdVW8ht1DejFsFVHQtBZyzg

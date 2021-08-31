@@ -2,65 +2,87 @@ import { User } from '../models'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import { JWT_SECRET } from '../config'
+import { userSchemaValidator } from '../helpers/schemaValidator'
+import createError from 'http-errors'
 
-export const login = async (req, res) => {
+export const login = async (req, res, next) => {
   const { email, password } = req.body
 
-  // Match password
-  const user = await User.findOne({ email })
+  try {
+    const {
+      email: emailValidated,
+      password: passwordValidated
+    } = await userSchemaValidator.validateAsync({ email, password })
 
-  const passwordCorrect = user === null
-    ? false
-    : await bcrypt.compare(password, user.passwordHash)
+    // Match password
+    const user = await User.findOne({ email: emailValidated })
 
-  if (!(user && passwordCorrect)) {
-    res.status(401).json({
-      error: 'invalid email or password'
-    })
-  }
+    const passwordCorrect = user === null
+      ? false
+      : await bcrypt.compare(passwordValidated, user.passwordHash)
 
-  const userForToken = {
-    id: user._id
-  }
-
-  jwt.sign(userForToken, JWT_SECRET, (err, token) => {
-    if (err) {
-      res.status(500).send(err)
-    } else {
-      res.json({ token })
+    // Just in case :P
+    if (!(user && passwordCorrect)) {
+      throw new Error('invalid email or password')
     }
-  })
+
+    const userForToken = {
+      id: user._id
+    }
+
+    jwt.sign(userForToken, JWT_SECRET, (err, token) => {
+      if (err) {
+        res.status(500).send(err)
+      } else {
+        res.json({ token })
+      }
+    })
+  } catch (error) {
+    if (error.isJoi) return next(createError.Unauthorized('User does not exists!'))
+    next(error)
+  }
 }
 
-export const register = async (req, res) => {
+export const register = async (req, res, next) => {
   const { email, password } = req.body
 
-  const saltRounds = 10
-  const passwordHash = await bcrypt.hash(password, saltRounds)
+  try {
+    const {
+      email: emailValidated,
+      password: passwordValidated
+    } = await userSchemaValidator.validateAsync({ email, password })
 
-  const user = new User({
-    email,
-    passwordHash
-  })
+    const userFound = await User.findOne({ email: emailValidated })
 
-  const userFound = await User.findOne({ email })
-  if (userFound) {
-    res.statusMessage = 'User already exists'
-    return res.status(400).json({ message: 'User already exists' })
-  }
-
-  const savedUser = await user.save()
-  const userForToken = {
-    id: savedUser._id
-  }
-
-  jwt.sign(userForToken, JWT_SECRET, (err, token) => {
-    if (err) {
-      res.status(500).send(err)
-    } else {
-      res.json({ token })
+    if (userFound) {
+      res.statusMessage = 'User already exists'
+      return res.status(400).json({ message: 'User already exists' })
     }
-  })
+
+    const saltRounds = 10
+    const passwordHash = await bcrypt.hash(passwordValidated, saltRounds)
+
+    const user = new User({
+      email: emailValidated,
+      passwordHash
+    })
+
+    const savedUser = await user.save()
+    const userForToken = {
+      id: savedUser._id
+    }
+
+    jwt.sign(userForToken, JWT_SECRET, (err, token) => {
+      if (err) {
+        res.status(500).send(err)
+      } else {
+        res.json({ token })
+      }
+    })
+  } catch (error) {
+    if (error.isJoi) return next(createError(error.message))
+    next(error)
+  }
 }
 
 export const profile = async (req, res) => {
