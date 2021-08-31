@@ -1,6 +1,6 @@
 // https://mongoosejs.com/docs/migrating_to_6.html#no-more-deprecation-warning-options
 
-import { connect } from 'mongoose'
+import { connect, connection } from 'mongoose'
 import { MONGODB_URI } from './'
 
 ;(async () => {
@@ -9,3 +9,20 @@ import { MONGODB_URI } from './'
     console.log(`Database connected to ${db.connection.name}`)
   } catch (e) { console.error(`[Error] ${e}`) }
 })()
+
+connection.on('connected', () => {
+  console.log('MongoDB is connected')
+})
+
+connection.on('error', (error) => {
+  console.error(error)
+})
+
+connection.on('disconnected', () => {
+  console.log('MongoDB is disconnected')
+})
+
+process.on('SIGINT', async () => {
+  await connection.close()
+  process.exit(0)
+})
