@@ -50,10 +50,10 @@ export default function ProductForm () {
       </Text>
       <FormControl as='form' paddingY={6} onSubmit={handleSubmit}>
         <FormLabel>Product Name</FormLabel>
-        <Input onChange={handleOnChange} type='text' name='name' placeholder='Name...' />
+        <Input onChange={handleOnChange} id='name' type='text' name='name' placeholder='Name...' />
 
         <FormLabel>Price</FormLabel>
-        <Input onChange={handleOnChange} type='number' name='price' placeholder='Example: $20.00' />
+        <Input onChange={handleOnChange} id='price' type='number' name='price' placeholder='Example: $20.00' />
 
         <FormLabel>Quantity</FormLabel>
         <NumberInput max={50} min={0} onChange={(value) => setProductInput({ ...productInput, quantity: Number(value) })}>

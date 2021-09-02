@@ -1,5 +1,6 @@
 import React from 'react'
 import { useProducts } from '../context/providers/ProductsContext'
+import { Link } from 'react-router-dom'
 
 export default function Home () {
   const { products, isLoading, errorMessage } = useProducts()
@@ -8,6 +9,12 @@ export default function Home () {
 
   return (
     <>
+      <div style={{ fontWeight: 'bold' }}>
+        <Link to='/products/new'>Add new product</Link>
+      </div>
+      <div style={{ fontWeight: 'bold' }}>
+        <Link to='/auth/sign-up'>Register</Link>
+      </div>
       {products &&
         products.map((product) => (
           <div key={product.id}>
