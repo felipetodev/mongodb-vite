@@ -11,15 +11,16 @@ export default function SignUp () {
   const [registerUser, setRegisterUser] = useState(INITIAL_REGISTER_STATE)
   const { signup, user, isLoggedIn, isLoading: request, errorMessage } = useAuth()
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    signup(registerUser)
-  }
   const handleOnChange = ({ target }) => {
     setRegisterUser({
       ...registerUser,
       [target.name]: target.value
     })
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    signup(registerUser)
   }
   return (
     <Container maxWidth='container.xl'>
@@ -38,7 +39,7 @@ export default function SignUp () {
           colorScheme='teal'
           isLoading={request}
           type='submit'
-          disabled={isLoggedIn}
+          disabled={user}
         >
           {!isLoggedIn
             ? 'Create Account'

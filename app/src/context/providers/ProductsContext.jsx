@@ -6,13 +6,11 @@ import { productsActions } from '../actions/productsActions'
 export const ProductContext = createContext(initialState)
 
 export const useProducts = () => {
-  const context = useContext(ProductContext)
-  return context
+  return useContext(ProductContext)
 }
 
 export const ProductProvider = ({ children }) => {
   const [state, dispatch] = useReducer(productsReducer, initialState)
-
   const loadProducts = async () => {
     dispatch({
       type: productsActions.LOAD_PRODUCTS

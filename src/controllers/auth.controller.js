@@ -1,9 +1,8 @@
 import { User } from '../models'
 import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken'
-import { JWT_SECRET } from '../config'
 import { userSchemaValidator } from '../helpers/schemaValidator'
 import createError from 'http-errors'
+import { signAccessToken } from '../helpers/signAccessToken'
 
 export const login = async (req, res, next) => {
   const { email, password } = req.body
@@ -27,16 +26,12 @@ export const login = async (req, res, next) => {
     }
 
     const userForToken = {
-      id: user._id
+      id: user.id
     }
 
-    jwt.sign(userForToken, JWT_SECRET, (err, token) => {
-      if (err) {
-        res.status(500).send(err)
-      } else {
-        res.json({ token })
-      }
-    })
+    const token = await signAccessToken(userForToken)
+
+    res.json({ token })
   } catch (error) {
     if (error.isJoi) return next(createError.Unauthorized('User does not exists!'))
     next(error)
@@ -69,16 +64,11 @@ export const register = async (req, res, next) => {
 
     const savedUser = await user.save()
     const userForToken = {
-      id: savedUser._id
+      id: savedUser.id
     }
 
-    jwt.sign(userForToken, JWT_SECRET, (err, token) => {
-      if (err) {
-        res.status(500).send(err)
-      } else {
-        res.json({ token })
-      }
-    })
+    const token = await signAccessToken(userForToken)
+    res.json({ token })
   } catch (error) {
     if (error.isJoi) return next(createError(error.message))
     next(error)

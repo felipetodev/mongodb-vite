@@ -7,7 +7,7 @@ export const initialState = {
   errorMessage: ''
 }
 
-export const productsReducer = (state, action) => {
+export const productsReducer = (state = initialState, action) => {
   switch (action.type) {
     case productsActions.LOAD_PRODUCTS:
       return {

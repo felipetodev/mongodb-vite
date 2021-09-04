@@ -15,6 +15,9 @@ export default function Home () {
       <div style={{ fontWeight: 'bold' }}>
         <Link to='/auth/sign-up'>Register</Link>
       </div>
+      <div style={{ fontWeight: 'bold' }}>
+        <Link to='/auth/sign-in'>Login</Link>
+      </div>
       {products &&
         products.map((product) => (
           <div key={product.id}>

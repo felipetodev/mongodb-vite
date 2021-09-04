@@ -1,13 +1,12 @@
 import React, { createContext, useContext, useReducer } from 'react'
-import { register, profile } from '../../api'
+import { register, profile, login } from '../../api'
 import { authActions } from '../actions/authActions'
 import { initialState, authReducer } from '../reducers/authReducer'
 
 export const AuthContext = createContext(initialState)
 
 export const useAuth = () => {
-  const context = useContext(AuthContext)
-  return context
+  return useContext(AuthContext)
 }
 
 export const AuthProvider = ({ children }) => {
@@ -23,9 +22,12 @@ export const AuthProvider = ({ children }) => {
 
       let user = null
       if (token) {
+        window.localStorage.setItem('token', token)
         const { data = {} } = await profile(token)
         user = await data
       }
+
+      if (user) window.localStorage.setItem('user', JSON.stringify(user))
 
       dispatch({
         type: authActions.AUTH_SIGN_UP_SUCCESS,
@@ -43,8 +45,41 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
+  const signIn = async (userLogin = {}) => {
+    dispatch({
+      type: authActions.AUTH_SIGN_IN
+    })
+    try {
+      const { data = {} } = await login(userLogin)
+      const { token = '' } = data
+
+      let user = null
+      if (token) {
+        window.localStorage.setItem('token', token)
+        const { data = {} } = await profile(token)
+        user = await data
+      }
+
+      if (user) window.localStorage.setItem('user', JSON.stringify(user))
+
+      dispatch({
+        type: authActions.AUTH_SIGN_IN_SUCCESS,
+        payload: {
+          token,
+          user
+        }
+      })
+    } catch (error) {
+      const { response } = error
+      dispatch({
+        type: authActions.AUTH_SIGN_IN_FAIL,
+        payload: response.data.message || error
+      })
+    }
+  }
+
   return (
-    <AuthContext.Provider value={{ ...state, signup }}>
+    <AuthContext.Provider value={{ ...state, signup, signIn }}>
       {children}
     </AuthContext.Provider>
   )
