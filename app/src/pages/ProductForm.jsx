@@ -2,10 +2,10 @@ import React, { useState } from 'react'
 import { useProducts } from '../context/providers/ProductsContext'
 import {
   Text,
-  Container,
   FormControl,
   FormLabel,
   Input,
+  Stack,
   NumberDecrementStepper,
   NumberIncrementStepper,
   NumberInput,
@@ -16,6 +16,7 @@ import {
   Center,
   Button
 } from '@chakra-ui/react'
+import noImageInput from '../assets/no-image.png'
 
 const INITIAL_FORM_STATE = {
   name: '',
@@ -24,9 +25,17 @@ const INITIAL_FORM_STATE = {
   description: ''
 }
 
+const parseImageUpload = (image) => {
+  const binaryData = []
+  binaryData.push(image)
+  const blob = new window.Blob(binaryData, { type: 'application/zip' })
+  return window.URL.createObjectURL(blob)
+}
+
 export default function ProductForm () {
   const { addNewProduct, isLoading: request } = useProducts()
   const [productInput, setProductInput] = useState(INITIAL_FORM_STATE)
+  const [prevImage, setPrevImage] = useState(null)
 
   const handleOnChange = ({ target }) => {
     setProductInput({
@@ -44,7 +53,7 @@ export default function ProductForm () {
   }
 
   return (
-    <Container maxWidth='container.xl'>
+    <>
       <Text as='h1' fontSize='xx-large'>
         Add new product
       </Text>
@@ -75,11 +84,28 @@ export default function ProductForm () {
         >
           Save
         </Button>
+        <Center>
+          <Image
+            src={prevImage
+              ? parseImageUpload(prevImage)
+              : noImageInput}
+            alt='upload-image'
+            objectFit='contain'
+            h={60}
+            w={60}
+          />
+          <Stack paddingLeft={2}>
+            <FormLabel id='image'>Image:</FormLabel>
+            <Input
+              onChange={({ target }) => setPrevImage(target.files[0])}
+              p={1}
+              id='image'
+              type='file'
+              cursor='pointer'
+            />
+          </Stack>
+        </Center>
       </FormControl>
-
-      <Center>
-        <Image src='gibbresh.png' fallbackSrc='https://via.placeholder.com/150' />
-      </Center>
-    </Container>
+    </>
   )
 }
