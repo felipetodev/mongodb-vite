@@ -78,8 +78,15 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
+  const logOut = async () => {
+    window.localStorage.clear()
+    dispatch({
+      type: authActions.AUTH_SESSION_DESTROY
+    })
+  }
+
   return (
-    <AuthContext.Provider value={{ ...state, signup, signIn }}>
+    <AuthContext.Provider value={{ ...state, signup, signIn, logOut }}>
       {children}
     </AuthContext.Provider>
   )

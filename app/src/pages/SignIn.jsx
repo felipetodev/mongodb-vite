@@ -1,9 +1,7 @@
-import { Button } from '@chakra-ui/button'
-import { FormControl, FormLabel } from '@chakra-ui/form-control'
-import { Input } from '@chakra-ui/input'
-import { Container, Text } from '@chakra-ui/layout'
 import React, { useState } from 'react'
 import { useAuth } from '../context/providers/AuthContext'
+import { Link as ReachLink } from 'react-router-dom'
+import { FormControl, FormLabel, Link, Button, Input, Text } from '@chakra-ui/react'
 
 const INITIAL_LOGIN_STATE = {
   email: '',
@@ -12,7 +10,7 @@ const INITIAL_LOGIN_STATE = {
 
 export default function SignIn () {
   const [userLogin, setUserLogin] = useState(INITIAL_LOGIN_STATE)
-  const { signIn, user, isLoading: request, isLoggedIn } = useAuth()
+  const { signIn, user, isLoading: request } = useAuth()
 
   const handleOnChange = ({ target }) => {
     setUserLogin({
@@ -27,7 +25,7 @@ export default function SignIn () {
   }
 
   return (
-    <Container maxWidth='container.xl'>
+    <>
       <Text as='h1' fontSize='xx-large'>
         Login
       </Text>
@@ -45,11 +43,12 @@ export default function SignIn () {
           type='submit'
           disabled={user}
         >
-          {!isLoggedIn
-            ? 'Log In'
-            : `Welcome back ${user.email}!`}
+          Send
         </Button>
+        <Text>Don't have an account? {' '}
+          <Link as={ReachLink} to='/auth/sign-up' color='teal.300'>Sign Up</Link>
+        </Text>
       </FormControl>
-    </Container>
+    </>
   )
 }

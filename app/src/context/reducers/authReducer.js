@@ -53,6 +53,15 @@ export const authReducer = (state = initialState, action) => {
         isLoading: false,
         errorMessage: `Something went wrong: [${payload}]`
       }
+    case authActions.AUTH_SESSION_DESTROY:
+      return {
+        ...state,
+        isLoading: false,
+        isLoggedIn: false,
+        token: null,
+        user: null,
+        errorMessage: null
+      }
     default:
       return {
         ...state

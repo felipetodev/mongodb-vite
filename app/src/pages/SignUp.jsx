@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useAuth } from '../context/providers/AuthContext'
-import { Button, Container, FormControl, FormLabel, Input, Text } from '@chakra-ui/react'
+import { Link as ReachLink } from 'react-router-dom'
+import { Button, FormControl, FormLabel, Input, Text, Link } from '@chakra-ui/react'
 
 const INITIAL_REGISTER_STATE = {
   email: '',
@@ -9,7 +10,7 @@ const INITIAL_REGISTER_STATE = {
 
 export default function SignUp () {
   const [registerUser, setRegisterUser] = useState(INITIAL_REGISTER_STATE)
-  const { signup, user, isLoggedIn, isLoading: request, errorMessage } = useAuth()
+  const { signup, user, isLoading: request, errorMessage } = useAuth()
 
   const handleOnChange = ({ target }) => {
     setRegisterUser({
@@ -23,7 +24,7 @@ export default function SignUp () {
     signup(registerUser)
   }
   return (
-    <Container maxWidth='container.xl'>
+    <>
       <Text as='h1' fontSize='xx-large'>
         Register
       </Text>
@@ -41,16 +42,17 @@ export default function SignUp () {
           type='submit'
           disabled={user}
         >
-          {!isLoggedIn
-            ? 'Create Account'
-            : `Welcome ${user.email}!`}
+          Create Account
         </Button>
+        <Text>Have an account? {' '}
+          <Link as={ReachLink} to='/auth/sign-in' color='teal.300'>Log in now</Link>
+        </Text>
         {errorMessage && (
           <Text>
             {errorMessage}
           </Text>
         )}
       </FormControl>
-    </Container>
+    </>
   )
 }
