@@ -1,0 +1,19 @@
+GET http://localhost:3007/products
+Content-Type: application/json
+
+### Create product
+POST  http://localhost:3007/products
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMmQ5NDczMjYyM2I4MjcwY2FmNjhkMyIsImlhdCI6MTYzMTIzNzA2MH0.5oj6FjwNz8y3oFA94ZKZI8OMumuBCS95rMbvgyXNIKs
+
+{
+  "name": "Product3",
+  "price": 10.30,
+  "description": "some product description 4 this product :v",
+  "quantity": 2
+}
+
+
+### Delete product
+DELETE  http://localhost:3007/products/612af9154472310c1f9ce8b1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMmQ5NDczMjYyM2I4MjcwY2FmNjhkMyIsImlhdCI6MTYzMTIzNzA2MH0.5oj6FjwNz8y3oFA94ZKZI8OMumuBCS95rMbvgyXNIKs

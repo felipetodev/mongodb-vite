@@ -6,12 +6,13 @@ import {
   getProducts,
   updateProduct
 } from '../controllers/product.controller'
+import { userExtractor } from '../middlewares/userExtractor'
 const productsRouter = Router()
 
 productsRouter.get('/products', getProducts)
-productsRouter.post('/products', createProduct)
+productsRouter.post('/products', userExtractor, createProduct)
 productsRouter.get('/products/:id', getProduct)
-productsRouter.put('/products/:id', updateProduct)
-productsRouter.delete('products/:id', deleteProduct)
+productsRouter.put('/products/:id', userExtractor, updateProduct)
+productsRouter.delete('/products/:id', userExtractor, deleteProduct)
 
 export default productsRouter
