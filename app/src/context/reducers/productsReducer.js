@@ -2,7 +2,7 @@ import { productsActions } from '../actions/productsActions'
 
 export const initialState = {
   products: [],
-  currentProduct: {},
+  cart: [],
   isLoading: false,
   errorMessage: ''
 }
@@ -43,7 +43,28 @@ export const productsReducer = (state = initialState, action) => {
         isLoading: false,
         errorMessage: `Something went wrong [${action.payload}]`
       }
-
+    case productsActions.ADD_PRODUCT_TO_CART:
+      return {
+        ...state,
+        cart: [...state.cart, action.payload]
+      }
+    case productsActions.DELETE_PRODUCT:
+      return {
+        ...state,
+        isLoading: true
+      }
+    case productsActions.DELETE_PRODUCT_SUCCESS:
+      return {
+        ...state,
+        products: state.products.filter(item => item.id !== action.payload),
+        isLoading: false
+      }
+    case productsActions.DELETE_PRODUCT_FAIL:
+      return {
+        ...state,
+        isLoading: false,
+        errorMessage: action.payload
+      }
     default:
       return state
   }

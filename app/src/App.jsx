@@ -4,6 +4,7 @@ import SignIn from './pages/SignIn'
 import SignUp from './pages/SignUp'
 import ProductForm from './pages/ProductForm'
 import Navbar from './components/Navbar'
+import Cart from './pages/Cart'
 import { AuthProvider } from './context/providers/AuthContext'
 import { ProductProvider } from './context/providers/ProductsContext'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
@@ -21,6 +22,7 @@ function App () {
               <Route path='/auth/sign-up' exact component={SignUp} />
               <Route path='/auth/sign-in' exact component={SignIn} />
               <Route path='/products/new' exact component={ProductForm} />
+              <Route path='/cart' exact component={Cart} />
             </Switch>
           </Container>
         </ProductProvider>

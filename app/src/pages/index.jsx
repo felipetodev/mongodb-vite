@@ -3,9 +3,12 @@ import { useProducts } from '../context/providers/ProductsContext'
 import { Text, Stack, Grid, Button, Image, Spacer } from '@chakra-ui/react'
 
 export default function Home () {
-  const { products, isLoading, errorMessage } = useProducts()
+  const { products, isLoading, errorMessage, addProductToCart, removeProduct } = useProducts()
 
-  const handleClick = () => {}
+  const handleDeleteProduct = async (item) => {
+    const isDeleted = await removeProduct(item)
+    console.log({ isDeleted })
+  }
 
   if (isLoading) return <h1>Loading...</h1>
   if (errorMessage) return <h1>{errorMessage}</h1>
@@ -43,6 +46,22 @@ export default function Home () {
             >
               ${product.price}
             </Text>
+
+            <Button
+              colorScheme='red'
+              onClick={() => handleDeleteProduct(product.id)}
+              width={1}
+              height={6}
+              fontSize='sm'
+              title='delete product'
+              position='absolute'
+              borderRadius={9999}
+              top={-2}
+              right={-3}
+            >
+              Ｘ
+            </Button>
+
             <Stack display='flex' direction='row'>
               <Image width={24} height={24} src='https://via.placeholder.com/120x120' />
               <Stack>
@@ -51,7 +70,7 @@ export default function Home () {
               </Stack>
             </Stack>
             <Spacer />
-            <Button onClick={handleClick} colorScheme='teal'>Buy</Button>
+            <Button onClick={() => addProductToCart(product)} colorScheme='teal'>Buy</Button>
           </Stack>
         ))}
       </Grid>

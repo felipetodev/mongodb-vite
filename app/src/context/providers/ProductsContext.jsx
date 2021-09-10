@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useReducer } from 'react'
-import { getProducts, saveProduct } from '../../api'
+import { getProducts, saveProduct, deleteProduct } from '../../api'
 import { productsReducer, initialState } from '../reducers/productsReducer'
 import { productsActions } from '../actions/productsActions'
 
@@ -52,8 +52,36 @@ export const ProductProvider = ({ children }) => {
     }
   }
 
+  const removeProduct = (productId) => {
+    dispatch({
+      type: productsActions.DELETE_PRODUCT
+    })
+    try {
+      deleteProduct(productId)
+
+      dispatch({
+        type: productsActions.DELETE_PRODUCT_SUCCESS,
+        payload: productId
+      })
+
+      return true
+    } catch (error) {
+      dispatch({
+        type: productsActions.DELETE_PRODUCT_FAIL,
+        payload: error
+      })
+    }
+  }
+
+  const addProductToCart = (product) => {
+    dispatch({
+      type: productsActions.ADD_PRODUCT_TO_CART,
+      payload: product
+    })
+  }
+
   return (
-    <ProductContext.Provider value={{ ...state, addNewProduct }}>
+    <ProductContext.Provider value={{ ...state, addNewProduct, addProductToCart, removeProduct }}>
       {children}
     </ProductContext.Provider>
   )
