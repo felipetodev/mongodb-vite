@@ -8,7 +8,7 @@ export const getProducts = async (req, res) => {
 }
 
 export const createProduct = async (req, res, next) => {
-  const { name, price, description, quantity } = req.body
+  const { name, price, description, stock } = req.body
   try {
     const productDuplicated = await Product.findOne({ name })
 
@@ -18,13 +18,12 @@ export const createProduct = async (req, res, next) => {
       name,
       price,
       description,
-      quantity
+      stock
     })
 
     await newProduct.save()
     res.json(newProduct)
   } catch (error) {
-    console.log(error)
     next(error)
   }
 }
@@ -44,7 +43,6 @@ export const deleteProduct = async (req, res, next) => {
     if (deletedProduct) return res.sendStatus(204)
     return res.sendStatus(404)
   } catch (error) {
-    console.log('----', error)
     next(error)
   }
 }
