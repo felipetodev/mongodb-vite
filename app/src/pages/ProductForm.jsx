@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useProducts } from '../context/providers/ProductsContext'
+import { useProducts } from '../context'
 import {
   Text,
   FormControl,
@@ -21,7 +21,7 @@ import noImageInput from '../assets/no-image.png'
 const INITIAL_FORM_STATE = {
   name: '',
   price: 0,
-  quantity: 0,
+  stock: 0,
   description: ''
 }
 
@@ -65,7 +65,7 @@ export default function ProductForm () {
         <Input onChange={handleOnChange} id='price' type='number' name='price' placeholder='Example: $20.00' />
 
         <FormLabel>Quantity</FormLabel>
-        <NumberInput max={50} min={0} onChange={(value) => setProductInput({ ...productInput, quantity: Number(value) })}>
+        <NumberInput max={50} min={0} onChange={(value) => setProductInput({ ...productInput, stock: Number(value) })}>
           <NumberInputField placeholder='Product quantity...' />
           <NumberInputStepper>
             <NumberIncrementStepper />

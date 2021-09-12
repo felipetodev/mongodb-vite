@@ -1,9 +1,10 @@
 import React from 'react'
-import { useProducts } from '../context/providers/ProductsContext'
+import { useProducts, useCart } from '../context'
 import { Text, Stack, Grid, Button, Image, Spacer } from '@chakra-ui/react'
 
 export default function Home () {
-  const { products, isLoading, errorMessage, addProductToCart, removeProduct } = useProducts()
+  const { products, isLoading, errorMessage, removeProduct } = useProducts()
+  const { appendItemToCart } = useCart()
 
   const handleDeleteProduct = async (item) => {
     const isDeleted = await removeProduct(item)
@@ -67,10 +68,11 @@ export default function Home () {
               <Stack>
                 <Text fontWeight='bold' color='teal'>{product.name}</Text>
                 <Text fontSize={12}>{product.description}</Text>
+                <Text fontSize='x-small'>Unidades: {product.stock}</Text>
               </Stack>
             </Stack>
             <Spacer />
-            <Button onClick={() => addProductToCart(product)} colorScheme='teal'>Buy</Button>
+            <Button onClick={() => appendItemToCart({ product })} colorScheme='teal'>Buy</Button>
           </Stack>
         ))}
       </Grid>

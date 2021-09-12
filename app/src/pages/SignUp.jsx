@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useAuth } from '../context/providers/AuthContext'
+import { useAuth } from '../context'
 import { Link as ReachLink } from 'react-router-dom'
 import { Button, FormControl, FormLabel, Input, Text, Link } from '@chakra-ui/react'
 
