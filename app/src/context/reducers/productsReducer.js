@@ -2,7 +2,6 @@ import { productsActions } from '../actions/productsActions'
 
 export const initialState = {
   products: [],
-  cart: [],
   isLoading: false,
   errorMessage: ''
 }
@@ -42,11 +41,6 @@ export const productsReducer = (state = initialState, action) => {
         ...state,
         isLoading: false,
         errorMessage: `Something went wrong [${action.payload}]`
-      }
-    case productsActions.ADD_PRODUCT_TO_CART:
-      return {
-        ...state,
-        cart: [...state.cart, action.payload]
       }
     case productsActions.DELETE_PRODUCT:
       return {

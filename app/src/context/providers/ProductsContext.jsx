@@ -73,15 +73,8 @@ export const ProductProvider = ({ children }) => {
     }
   }
 
-  const addProductToCart = (product) => {
-    dispatch({
-      type: productsActions.ADD_PRODUCT_TO_CART,
-      payload: product
-    })
-  }
-
   return (
-    <ProductContext.Provider value={{ ...state, addNewProduct, addProductToCart, removeProduct }}>
+    <ProductContext.Provider value={{ ...state, addNewProduct, removeProduct }}>
       {children}
     </ProductContext.Provider>
   )
