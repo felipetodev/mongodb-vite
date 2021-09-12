@@ -64,7 +64,7 @@ export default function Home () {
             </Button>
 
             <Stack display='flex' direction='row'>
-              <Image width={24} height={24} src='https://via.placeholder.com/120x120' />
+              <Image objectFit='contain' width={24} height={24} src={product?.images?.url} alt={product.name} />
               <Stack>
                 <Text fontWeight='bold' color='teal'>{product.name}</Text>
                 <Text fontSize={12}>{product.description}</Text>

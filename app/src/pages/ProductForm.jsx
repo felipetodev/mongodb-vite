@@ -35,7 +35,7 @@ const parseImageUpload = (image) => {
 export default function ProductForm () {
   const { addNewProduct, isLoading: request } = useProducts()
   const [productInput, setProductInput] = useState(INITIAL_FORM_STATE)
-  const [prevImage, setPrevImage] = useState(null)
+  const [fileInput, setFileInput] = useState('')
 
   const handleOnChange = ({ target }) => {
     setProductInput({
@@ -49,7 +49,15 @@ export default function ProductForm () {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    addNewProduct(productInput)
+    const formData = new window.FormData()
+
+    formData.append('name', productInput.name)
+    formData.append('price', productInput.price)
+    formData.append('stock', productInput.stock)
+    formData.append('description', productInput.description)
+    formData.append('image', fileInput)
+
+    addNewProduct(formData)
   }
 
   return (
@@ -64,9 +72,9 @@ export default function ProductForm () {
         <FormLabel>Price</FormLabel>
         <Input onChange={handleOnChange} id='price' type='number' name='price' placeholder='Example: $20.00' />
 
-        <FormLabel>Quantity</FormLabel>
+        <FormLabel>Stock Quantity</FormLabel>
         <NumberInput max={50} min={0} onChange={(value) => setProductInput({ ...productInput, stock: Number(value) })}>
-          <NumberInputField placeholder='Product quantity...' />
+          <NumberInputField placeholder='Product stock quantity...' />
           <NumberInputStepper>
             <NumberIncrementStepper />
             <NumberDecrementStepper />
@@ -86,8 +94,8 @@ export default function ProductForm () {
         </Button>
         <Center>
           <Image
-            src={prevImage
-              ? parseImageUpload(prevImage)
+            src={fileInput
+              ? parseImageUpload(fileInput)
               : noImageInput}
             alt='upload-image'
             objectFit='contain'
@@ -97,9 +105,10 @@ export default function ProductForm () {
           <Stack paddingLeft={2}>
             <FormLabel id='image'>Image:</FormLabel>
             <Input
-              onChange={({ target }) => setPrevImage(target.files[0])}
+              onChange={({ target }) => setFileInput(target.files[0])}
               p={1}
               id='image'
+              name='image'
               type='file'
               cursor='pointer'
             />

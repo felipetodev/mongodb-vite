@@ -17,7 +17,11 @@ axios2.interceptors.request.use((config) => {
   return Promise.reject(error)
 })
 
-export const saveProduct = async (newProduct = {}) => await axios2.post(`${API}/products`, newProduct)
+export const saveProduct = async (newProduct = {}) => await axios2.post(`${API}/products`, newProduct, {
+  headers: {
+    'Content-Type': 'multipart/form-data'
+  }
+})
 
 // authApi
 export const register = async (user) => await axios.post(`${API}/auth/register`, user)

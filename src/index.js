@@ -5,11 +5,19 @@ import productsRouter from './routes/products.routes'
 import authRouter from './routes/auth.routes'
 import morgan from 'morgan'
 import { PORT } from './config'
+import fileUpload from 'express-fileupload'
 
 const app = express()
 app.use(cors())
 app.use(morgan('dev'))
 app.use(express.json())
+app.use(express.urlencoded({ extended: false }))
+app.use(
+  fileUpload({
+    useTempFiles: true,
+    tempFileDir: '/tmp/'
+  })
+)
 
 app.use(productsRouter)
 app.use(authRouter)
